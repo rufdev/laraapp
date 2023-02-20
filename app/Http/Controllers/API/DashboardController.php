@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:api');
         //$this->authorize('isAdmin');
     }
 /**
@@ -244,5 +244,10 @@ class DashboardController extends Controller
         //     },
 
 
+    }
+
+    public function schools(Request $request){
+        $schools = School::all();
+        return $schools;
     }
 }

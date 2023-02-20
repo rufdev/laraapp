@@ -11,8 +11,23 @@ window.Vue = require("vue").default;
 import Gate from "./gate";
 Vue.prototype.$gate = new Gate(window.user);
 
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
+import 'admin-lte/plugins/jquery-ui/jquery-ui.min.js';
+import 'admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js';
+import 'admin-lte/plugins/chart.js/Chart.min.js';
+import 'admin-lte/plugins/datatables/jquery.dataTables.min.js';
+import 'admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js';
+import 'admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js';
+import 'admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js';
+import 'admin-lte/plugins/select2/js/select2.full.min.js';
+
+
 //Import Vue Filter
 require("./filter");
+// require("./demo");
+// require("./dashboard");
 
 //Import progressbar
 require("./progressbar");

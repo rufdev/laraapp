@@ -17,9 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/samplepage', function () {
+    return view('samplepage');
+});
+
 
 Route::get('/authcheck', function () {
     return response()->json(Auth::check());

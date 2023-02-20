@@ -2,8 +2,14 @@ import Dashboard from './components/Dashboard.vue'
 import Profile from './components/Profile.vue'
 import User from './components/Users.vue'
 import Role from './components/Roles.vue'
+import ExampleComponent from './components/ExampleComponent.vue'
+import SamplePage from './components/admin/SamplePage.vue'
 
 export const routes = [
+    {
+        path:'/',
+        component:Dashboard
+    },
     {
         path:'/dashboard',
         component:Dashboard
@@ -21,5 +27,14 @@ export const routes = [
         component:Role
     },
     { path: '/developer', component: require('./components/Developer.vue').default },
+    {
+        path:'/sample',
+        component:ExampleComponent
+    },
+    {
+        path:'/samplepage',
+        component:SamplePage
+    },
+
 ];
 

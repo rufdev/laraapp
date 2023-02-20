@@ -11,9 +11,14 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-    require('admin-lte');
-    require('admin-lte/plugins/chart.js/Chart')
-} catch (e) {}
+
+    // AdminLTE code here.
+    require('admin-lte/dist/js/adminlte.js');
+} catch (e) {
+    console.log("TEST");
+    console.log(e);
+}
+
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
