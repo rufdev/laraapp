@@ -3,7 +3,7 @@ import Profile from './components/Profile.vue'
 import User from './components/Users.vue'
 import Role from './components/Roles.vue'
 import ExampleComponent from './components/ExampleComponent.vue'
-import SamplePage from './components/admin/SamplePage.vue'
+import SchoolPage from './components/transaction/SchoolPage.vue'
 
 export const routes = [
     {
@@ -32,8 +32,8 @@ export const routes = [
         component:ExampleComponent
     },
     {
-        path:'/samplepage',
-        component:SamplePage
+        path:'/school',
+        component:SchoolPage
     },
 
 ];

@@ -82,12 +82,31 @@
 
                         <li class="nav-item">
                             <router-link to="/dashboard" class="nav-link">
-                                <i class="nav-icon fas fa-plane"></i>
+                                <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </router-link>
                         </li>
+                        @canany(['isAdmin', 'isSupport'])
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-desktop"></i>
+                                <p>
+                                    Transaction
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <router-link to="/school" class="nav-link ">
+                                        <i class="nav-icon fas fa-school text-blue"></i>
+                                        <p>School</p>
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </li>
+                        @endcanany
                         @canany(['isAdmin', 'isSupport'])
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
