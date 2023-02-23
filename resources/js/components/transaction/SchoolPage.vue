@@ -36,7 +36,7 @@
                             <div class="card-body">
                                 <table
                                     id="school_table"
-                                    class="table table-bordered table-striped"
+                                    class="table table-bordered table-hover table-striped"
                                 >
                                     <thead>
                                         <tr>
@@ -153,15 +153,13 @@
                                     class="form-control"
                                     v-model="form.municipalityid"
                                 >
-                                    <template
-                                        v-for="purchase_order in purchase_orders"
+                                    <option
+                                        v-for="municipality in municipalities"
+                                        v-bind:key="municipality.id"
+                                        v-bind:value="municipality.id"
                                     >
-                                        <option
-                                            v-bind:key="purchase_order.number"
-                                        >
-                                            @{{ purchase_order.number }}
-                                        </option>
-                                    </template>
+                                        {{ municipality.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -209,20 +207,16 @@ export default {
                 description: "",
                 municipalityid: ""
             }),
-            municipalities: {}
+            municipalities: [],
+            table: null
         };
     },
     methods: {
         getMunicipalities() {
             axios.get("api/municipality").then(({ data }) => {
-                this.Municipalities = data;
+                this.municipalities = data;
             });
         },
-        // getResults(page = 1) {
-        //     axios.get("api/School?page=" + page).then(response => {
-        //         this.Schools = response.data;
-        //     });
-        // },
         newSchool() {
             this.editmode = false;
             this.form.reset();
@@ -234,130 +228,129 @@ export default {
             this.form.reset();
             $("#addNewSchool").modal("hide");
             $("#addNewSchool").css("z-index", "1500");
-        }
-        // editSchool(School) {
-        //     this.editmode = true;
-        //     this.form.reset();
-        //     $("#addNewSchool").modal("show");
-        //     $("#addNewSchool").css("z-index", "1500");
-        //     this.form.fill(School);
-        // },
-        // loadSchools() {
-        //     if (this.$gate.isAdmin() || this.$gate.isSupport()) {
-        //         axios.get("api/school").then(({ data }) => (this.Schools = data));
-        //     }
-        // },
-        // updateSchool() {
-        //     this.$Progress.start();
-        //     this.form
-        //         .put("api/School/" + this.form.id)
-        //         .then(() => {
-        //             $("#addNewSchool").modal("hide");
-        //             swal.fire(
-        //                 "Updated!",
-        //                 "Information has been updated.",
-        //                 "success"
-        //             );
-        //             this.$Progress.finish();
-        //             Fire.$emit("AfterCreate");
-        //         })
-        //         .catch(() => {
-        //             this.$Progress.fail();
-        //         });
-        // },
-        // deleteSchool(id) {
-        //     swal.fire({
-        //         title: "Are you sure?",
-        //         text: "You won't be able to revert this!",
-        //         showCancelButton: true,
-        //         confirmButtonColor: "#3085d6",
-        //         cancelButtonColor: "#d33",
-        //         confirmButtonText: "Yes, delete it!"
-        //     }).then(result => {
-        //         // Send request to the server
-        //         if (result.value) {
-        //             this.form
-        //                 .delete("api/School/" + id)
-        //                 .then(() => {
-        //                     swal.fire(
-        //                         "Deleted!",
-        //                         "Your file has been deleted.",
-        //                         "success"
-        //                     );
-        //                     Fire.$emit("AfterCreate");
-        //                 })
-        //                 .catch(() => {
-        //                     swal.fire(
-        //                         "Failed!",
-        //                         "There was something wrong.",
-        //                         "warning"
-        //                     );
-        //                 });
-        //         }
-        //     });
-        // },
-        // createSchool() {
-        //     this.$Progress.start();
-        //     this.form
-        //         .post("api/School")
-        //         .then(() => {
-        //             $("#addNewSchool").modal("hide");
-        //             Fire.$emit("AfterCreate");
-        //             toast.fire({
-        //                 title: "School Created in successfully"
-        //             });
-        //             this.$Progress.finish();
-        //         })
-        //         .catch(() => {
-        //             this.$Progress.fail();
-        //         });
-        // }
-    },
-    created() {
-        // Fire.$on("searching", () => {
-        //     let query = this.$parent.search;
-        //     axios
-        //         .get("api/school?q=" + query)
-        //         .then(data => {
-        //             console.log(data);
-        //             this.Schools = data.data;
-        //         })
-        //         .catch(() => {});
-        // });
-        // this.loadSchools();
-        // Fire.$on("AfterCreate", () => {
-        //     this.loadSchools();
-        // });
-
-        this.getMunicipalities();
-        $(function() {
-            var table = $("#school_table").DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "api/schools/list",
-                    type: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": document
-                            .querySelector('meta[name="csrf-token"]')
-                            .getAttribute("content")
-                    }
-                },
-                columns: [
-                    { data: "id", name: "id" },
-                    { data: "name", name: "name" },
-                    { data: "code", name: "code" },
-                    { data: "description", name: "description" },
-                    { data: "municipalityid", name: "municipalityid" },
-                    {
-                        data: "action",
-                        name: "action",
-                        orderable: true,
-                        searchable: true
-                    }
-                ]
+        },
+        editSchool(School) {
+            this.editmode = true;
+            this.form.reset();
+            $("#addNewSchool").modal("show");
+            $("#addNewSchool").css("z-index", "1500");
+            this.form.fill(School);
+        },
+        updateSchool() {
+            this.$Progress.start();
+            this.form
+                .put("api/schools/" + this.form.id)
+                .then(() => {
+                    
+                    this.table.ajax.reload();
+                    $("#addNewSchool").modal("hide");
+               
+                    swal.fire(
+                        "Updated!",
+                        "Information has been updated.",
+                        "success"
+                    );
+                    this.$Progress.finish();
+                    // Fire.$emit("AfterCreate");
+                })
+                .catch((e) => {
+                    console.log(e);
+                    this.$Progress.fail();
+                });
+        },
+        deleteSchool(id) {
+            swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(result => {
+                // Send request to the server
+                if (result.value) {
+                    this.form
+                        .delete("api/schools/" + id)
+                        .then(() => {
+                            swal.fire(
+                                "Deleted!",
+                                "Your file has been deleted.",
+                                "success"
+                            );
+                            this.table.ajax.reload();
+                            // Fire.$emit("AfterCreate");
+                        })
+                        .catch((e) => {
+                            console.log(e);
+                            swal.fire(
+                                "Failed!",
+                                "There was something wrong.",
+                                "warning"
+                            );
+                        });
+                }
             });
+        },
+        createSchool() {
+            this.$Progress.start();
+            this.form
+                .post("api/schools")
+                .then(() => {
+                    $("#addNewSchool").modal("hide");
+                    // Fire.$emit("AfterCreate");
+                    this.table.ajax.reload();
+                    toast.fire({
+                        title: "School Created in successfully"
+                    });
+                    this.$Progress.finish();
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
+        }
+    },
+    mounted() {
+        let self = this;
+        this.getMunicipalities();
+        $("body").on("click", ".edit", function() {
+            let row = $(this).parents('tr')[0];
+            let rowdata = self.table.row(row).data();
+            self.editSchool(rowdata);
         });
-    }
+        $("body").on("click", ".delete", function() {
+            let row = $(this).parents('tr')[0];
+            let rowdata = self.table.row(row).data();
+            self.deleteSchool(rowdata.id);
+        });
+       this.table = $("#school_table").DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            responsive: true,
+            ajax: {
+                url: "api/schools/list",
+                type: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content")
+                }
+            },
+            columns: [
+                { data: "id", name: "id" },
+                { data: "name", name: "name" },
+                { data: "code", name: "code" },
+                { data: "description", name: "description" },
+                { data: "municipalityid", name: "municipalityid" },
+                {
+                    data: "action",
+                    name: "action",
+                    orderable: true,
+                    searchable: true
+                }
+            ]
+        });
+    },
 };
 </script>

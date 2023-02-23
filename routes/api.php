@@ -38,6 +38,6 @@ Route::middleware('auth:api')->group(function () {
     ]);
     Route::get('getschoolchartdata', [DashboardController::class, 'getschoolchartdata']);
 
-    Route::get('schools', [SchoolController::class, 'index']);
+    Route::resource('schools', SchoolController::class);
     Route::post('schools/list', [SchoolController::class, 'getSchools']);
 });
